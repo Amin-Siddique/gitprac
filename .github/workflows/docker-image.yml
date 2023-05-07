@@ -30,13 +30,13 @@ jobs:
       run: |
         IMAGE_ID=${{ secrets.DOCKERHUB_USERNAME }}/$IMAGE_NAME
         # Strip git ref prefix from versionx
-        VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+        VERSION=latest
         # Strip "v" prefix from tag name
         [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
         # Use Docker `latest` tag convention xxxxxx
         [ "$VERSION" == "master" ] && VERSION=latest
         echo IMAGE_ID=$IMAGE_ID
         echo VERSION=$VERSION
-
+      
         docker tag image $IMAGE_ID:$VERSION
         docker push $IMAGE_ID:$VERSION
