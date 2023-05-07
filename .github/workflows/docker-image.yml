@@ -48,6 +48,7 @@ jobs:
 
   prod:
     needs: build
+    environment: prod
     runs-on: ubuntu-latest
     steps:
       - name: Run command in PRODd
