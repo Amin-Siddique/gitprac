@@ -24,11 +24,6 @@ jobs:
     - name: Login to DockerHub Registry
       run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
-  send:
-    needs:  build
-    runs-on: ubuntu-latest
-
-    steps:
     - name: Push Image
       run: |
         IMAGE_ID=${{ secrets.DOCKERHUB_USERNAME }}/$IMAGE_NAME
