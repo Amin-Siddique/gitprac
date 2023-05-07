@@ -38,16 +38,17 @@ jobs:
 
         docker tag image $IMAGE_ID:$VERSION
         docker push $IMAGE_ID:$VERSION
-  prod:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run command in PROD
-        run: echo "test=hello" >> "$GITHUB_OUTPUT"
-    
+
   uat:
     runs-on: ubuntu-latest
     needs: build
     steps:
       - name: Run command in UAT
         run: echo "Command running in UAT" 
+        
+  prod:
+    needs: [build,uat]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run command in PROD
+        run: echo "test=hello" >> "$GITHUB_OUTPUT"
