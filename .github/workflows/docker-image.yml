@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+    # TODO: Change variable to your image's name.
+    IMAGE_NAME: githubimi
+
 jobs:
 
   build:
@@ -15,7 +19,24 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --tag maxvan112:$(date +%s)
+      run: docker build . --file Dockerfile --tag image
+
     - uses: actions/checkout@v1
     - name: Login to DockerHub Registry
       run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+
+    - name: Push Image
+      run: |
+      IMAGE_ID=${{ secrets.DOCKER_REPOSITORY_NAME }}/$IMAGE_NAME
+      # Strip git ref prefix from version
+      VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+      # Strip "v" prefix from tag name
+      [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+      # Use Docker `latest` tag convention
+      [ "$VERSION" == "master" ] && VERSION=latest
+      echo IMAGE_ID=$IMAGE_ID
+      echo VERSION=$VERSION
+
+      docker tag image $IMAGE_ID:$VERSION
+      docker push $IMAGE_ID:$VERSION
