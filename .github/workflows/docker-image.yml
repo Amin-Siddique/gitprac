@@ -19,7 +19,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/$IMAGE_NAME
+      run: docker build . --file Dockerfile --tag image
 
     - uses: actions/checkout@v1
     - name: Login to DockerHub Registry
@@ -37,6 +37,6 @@ jobs:
         [ "$VERSION" == "master" ] && VERSION=latest
         echo IMAGE_ID=$IMAGE_ID
         echo VERSION=$VERSION
-      
+
         docker tag image $IMAGE_ID:$VERSION
         docker push $IMAGE_ID:$VERSION
