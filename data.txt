@@ -1,1 +1,2 @@
 hi
+This is a changed file now!
