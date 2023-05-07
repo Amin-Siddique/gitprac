@@ -45,10 +45,10 @@ jobs:
     steps:
       - name: Run command in UAT
         run: echo "Command running in UAT" 
-        
+
   prod:
     needs: [build,uat]
     runs-on: ubuntu-latest
     steps:
-      - name: Run command in PROD
+      - name: Run command in PRODd
         run: echo "test=hello" >> "$GITHUB_OUTPUT"
