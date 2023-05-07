@@ -47,7 +47,7 @@ jobs:
         run: echo "Command running in UAT" 
 
   prod:
-    needs: [build,uat]
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Run command in PRODd
